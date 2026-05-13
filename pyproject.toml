@@ -1,0 +1,218 @@
+[build-system]
+build-backend = "uv_build"
+requires = [ "uv_build>=0.11.0,<0.12" ]
+
+[project]
+name = "image-quality-sorter"
+version = "0.1.0"
+description = "Sort input images by perceptual sharpness using Laplacian variance and Tenengrad metrics."
+readme = "README.md"
+authors = [ { name = "Student", email = "student@example.com" } ]
+requires-python = ">=3.12"
+license = "MIT"
+keywords = [ "blur-detection", "image-quality", "laplacian", "sharpness" ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Education",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: Scientific/Engineering :: Image Processing",
+]
+dependencies = [
+  "click>=8.1.7",
+  "numpy>=1.26.0",
+  "pillow>=10.3.0",
+]
+scripts.iqsort = "image_quality_sorter.cli:main"
+
+[dependency-groups]
+dev = [
+  "poethepoet>=0.35.0",
+  "pre-commit>=4.0.0",
+  "ruff>=0.8.0",
+  { include-group = "build" },
+  { include-group = "docs" },
+  { include-group = "report" },
+  { include-group = "tests" },
+  { include-group = "types" },
+]
+tests = [
+  "pytest>=8.3.0",
+  "pytest-cov>=6.0.0",
+]
+types = [
+  "mypy>=1.13.0",
+]
+docs = [
+  "furo>=2024.8.6",
+  "myst-parser>=4.0.0",
+  "sphinx>=8.1.0",
+  "sphinx-autoapi>=3.3.0",
+  "sphinx-click>=6.0.0",
+  "sphinx-copybutton>=0.5.2",
+  "sphinx-pyproject>=0.3.0",
+]
+report = [
+  "matplotlib>=3.9.0",
+]
+build = [
+  "pyinstaller>=6.11.0",
+  "twine>=5.1.0",
+]
+
+[tool.uv.build-backend]
+module-name = "image_quality_sorter"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+indent-width = 4
+src = [ "src", "tests" ]
+exclude = [
+  ".git",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  "dist",
+  "build",
+  "docs/_build",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "ARG",
+  "B",
+  "BLE",
+  "C4",
+  "C90",
+  "D",
+  "E",
+  "F",
+  "FBT",
+  "I",
+  "N",
+  "PERF",
+  "PGH",
+  "PIE",
+  "PL",
+  "PT",
+  "PTH",
+  "RET",
+  "RUF",
+  "S",
+  "SIM",
+  "T20",
+  "UP",
+  "W",
+]
+ignore = [
+  "D203",  # One-blank-line-before-class conflicts with D211.
+  "D213",  # Multi-line-summary-second-line conflicts with D212.
+  "ISC001", # Recommended by Ruff when the formatter is enabled.
+]
+fixable = [ "ALL" ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"src/image_quality_sorter/cli.py" = [
+  "FBT001",
+  "PLR0913",
+]
+"tests/**/*.py" = [
+  "D100",
+  "D103",
+  "PLR2004",
+  "S101",
+]
+"benchmarks/**/*.py" = [ "T201" ]
+"report/**/*.py" = [ "T201" ]
+"scripts/**/*.py" = [ "T201" ]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = [ "tests" ]
+markers = [
+  "slow: integration, benchmark, or large-data tests that are skipped in the fast CI job",
+]
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+source = [ "image_quality_sorter" ]
+omit = [
+  "src/image_quality_sorter/__main__.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 100
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true
+mypy_path = "src"
+packages = [ "image_quality_sorter" ]
+
+[[tool.mypy.overrides]]
+module = [ "PIL.*" ]
+ignore_missing_imports = true
+
+[tool.sphinx-pyproject]
+project = "Image Quality Sorter"
+copyright = "2026, Student"
+author = "Student"
+extensions = [
+  "myst_parser",
+  "autoapi.extension",
+  "sphinx_click",
+  "sphinx.ext.napoleon",
+  "sphinx_copybutton",
+]
+html_theme = "furo"
+html_static_path = [ "_static" ]
+html_css_files = [ "custom.css" ]
+source_suffix = { ".md" = "markdown", ".rst" = "restructuredtext" }
+autoapi_dirs = [ "../src/image_quality_sorter" ]
+autoapi_options = [
+  "members",
+  "undoc-members",
+  "show-inheritance",
+  "show-module-summary",
+]
+autodoc_typehints = "description"
+exclude_patterns = [ "_build" ]
+
+[tool.poe.tasks]
+iqsort = { cmd = "iqsort", help = "Run the command-line application" }
+format = { cmd = "ruff format .", help = "Format Python files" }
+lint = { cmd = "ruff check .", help = "Run Ruff lint checks" }
+fix = { cmd = "ruff check . --fix", help = "Fix auto-fixable Ruff diagnostics" }
+typecheck = { cmd = "mypy", help = "Run mypy in strict mode" }
+test = { cmd = "pytest --cov --cov-report=term-missing --cov-report=xml", help = "Run all tests with 100% coverage requirement" }
+test-fast = { cmd = "pytest -m 'not slow' --cov --cov-report=term-missing --cov-report=xml", help = "Run fast tests only" }
+docs-build = { cmd = "sphinx-build -b html docs docs/_build/html", help = "Build Sphinx documentation" }
+docs-clean = { cmd = "python -c 'import shutil; shutil.rmtree(\"docs/_build\", ignore_errors=True)'", help = "Remove generated docs" }
+build = { cmd = "uv build", help = "Build wheel and source distribution" }
+publish-testpypi = { cmd = "twine upload --repository testpypi dist/*", help = "Upload built distributions to TestPyPI" }
+standalone = { cmd = "pyinstaller --onefile --name iqsort scripts/iqsort_standalone.py", help = "Build a no-Python-installation standalone executable" }
+benchmark = { cmd = "python benchmarks/benchmark.py", help = "Run a small benchmark" }
+report-figures = { cmd = "python report/generate_figures.py", help = "Regenerate LaTeX report figures" }
+check = { sequence = [ "lint", "typecheck", "test-fast", "docs-build", "build" ], help = "Run the fast local/CI quality gate" }
