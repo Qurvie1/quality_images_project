@@ -15,6 +15,8 @@ project: `src/`, `tests/`, `docs/`, `pyproject.toml`, `uv`, Ruff, pytest, mypy,
 Poe the Poet, Sphinx, CI, performance report, TestPyPI instructions, and a
 standalone build target.
 
+Release v.1.0.0
+
 ## Installation
 
 ```bash
