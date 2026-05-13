@@ -2,7 +2,9 @@
 
 from generate_figures import laplacian_variance, synthetic_image
 
-def main():
+
+def main() -> None:
+    """Run performance test for laplacian_variance on large synthetic images."""
     size = 4096
     repeats = 100
     image = synthetic_image(size)
