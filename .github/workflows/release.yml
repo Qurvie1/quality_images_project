@@ -6,6 +6,9 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
 jobs:
   build-release-assets:
     runs-on: ubuntu-latest
@@ -31,3 +34,4 @@ jobs:
             dist/*.tar.gz
             dist/*.whl
             dist/iqsort
+          token: ${{ secrets.GITHUB_TOKEN }}
