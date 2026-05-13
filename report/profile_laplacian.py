@@ -11,5 +11,6 @@ def main() -> None:
     for _ in range(repeats):
         laplacian_variance(image)
 
+
 if __name__ == "__main__":
     main()
