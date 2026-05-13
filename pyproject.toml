@@ -213,7 +213,7 @@ docs-build = { cmd = "sphinx-build -b html docs docs/_build/html", help = "Build
 docs-build-full = { cmd = "poe report-figures && sphinx-build -b html docs/ docs/_build/html", help = "Build documentation + graphs" }
 docs-clean = { cmd = "python -c 'import shutil; shutil.rmtree(\"docs/_build\", ignore_errors=True)'", help = "Remove generated docs" }
 build = { cmd = "uv build", help = "Build wheel and source distribution" }
-publish-testpypi = { cmd = "twine upload --repository testpypi dist/*", help = "Upload built distributions to TestPyPI" }
+publish-testpypi = { cmd = "twine upload --repository testpypi dist/*.tar.gz dist/*.whl", help = "Upload built distributions to TestPyPI" }
 standalone = { cmd = "pyinstaller --onefile --name iqsort scripts/iqsort_standalone.py", help = "Build a no-Python-installation standalone executable" }
 benchmark = { cmd = "python benchmarks/benchmark.py", help = "Run a small benchmark" }
 report-figures = { cmd = "python report/generate_figures.py", help = "Regenerate LaTeX report figures" }
