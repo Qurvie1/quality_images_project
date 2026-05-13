@@ -33,6 +33,7 @@ scripts.iqsort = "image_quality_sorter.cli:main"
 dev = [
   "poethepoet>=0.35.0",
   "pre-commit>=4.0.0",
+  "py-spy>=0.4.2",
   "ruff>=0.8.0",
   { include-group = "build" },
   { include-group = "docs" },
@@ -209,6 +210,7 @@ typecheck = { cmd = "mypy", help = "Run mypy in strict mode" }
 test = { cmd = "pytest --cov --cov-report=term-missing --cov-report=xml", help = "Run all tests with 100% coverage requirement" }
 test-fast = { cmd = "pytest -m 'not slow' --cov --cov-report=term-missing --cov-report=xml", help = "Run fast tests only" }
 docs-build = { cmd = "sphinx-build -b html docs docs/_build/html", help = "Build Sphinx documentation" }
+docs-build-full = { cmd = "poe report-figures && sphinx-build -b html docs/ docs/_build/html", help = "Build documentation + graphs" }
 docs-clean = { cmd = "python -c 'import shutil; shutil.rmtree(\"docs/_build\", ignore_errors=True)'", help = "Remove generated docs" }
 build = { cmd = "uv build", help = "Build wheel and source distribution" }
 publish-testpypi = { cmd = "twine upload --repository testpypi dist/*", help = "Upload built distributions to TestPyPI" }
@@ -216,3 +218,4 @@ standalone = { cmd = "pyinstaller --onefile --name iqsort scripts/iqsort_standal
 benchmark = { cmd = "python benchmarks/benchmark.py", help = "Run a small benchmark" }
 report-figures = { cmd = "python report/generate_figures.py", help = "Regenerate LaTeX report figures" }
 check = { sequence = [ "lint", "typecheck", "test-fast", "docs-build", "build" ], help = "Run the fast local/CI quality gate" }
+profile = { cmd = "py-spy record -o report/figures/flamegraph.svg --format flamegraph --duration 5 -- python report/profile_laplacian.py", help = "Generate flamegraph" }

@@ -2,6 +2,7 @@
 
 ![tests](docs/_static/badges/tests.svg)
 ![coverage](docs/_static/badges/coverage.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 `image-quality-sorter` ranks images by sharpness and blur. The default metric is
 **variance of Laplacian**: a grayscale image is convolved with a Laplacian kernel,
