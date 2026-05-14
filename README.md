@@ -1,7 +1,7 @@
 # Image Quality Sorter
 
 ![tests](docs/_static/badges/tests.svg)
-![coverage](docs/_static/badges/coverage.svg)
+[![coverage](docs/_static/badges/coverage.svg)](https://Qurvie1.github.io/quality_images_project/coverage/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 `image-quality-sorter` ranks images by sharpness and blur. The default metric is

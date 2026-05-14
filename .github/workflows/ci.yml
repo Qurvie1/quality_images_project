@@ -35,3 +35,11 @@ jobs:
         with:
           name: coverage-xml
           path: coverage.xml
+      - name: Deploy coverage report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./htmlcov
+          publish_branch: gh-pages
+          destination_dir: coverage
+          keep_files: false
